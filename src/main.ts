@@ -105,3 +105,118 @@ console.log("Stack size after pop:", numberStack.size());
 console.log("Is stack empty?", numberStack.isEmpty());
 
 //-----------------------------------------------------------------------
+
+// Problem: Student Grade Management System
+//-----------------------------------------------------------------------
+interface Student {
+  id: number;
+  name: string;
+  grades: Grade[];
+}
+
+interface Grade {
+  subject: string;
+  score: number;
+}
+
+type Students = Student[];
+
+//-----------------------------------------------------------------------
+
+const addStudent = (students: Students, student: Student): Students => [...students, student];
+
+const addGrade = (students: Students, studentId: number, grade: Grade): Students =>
+  students.map(student =>
+      student.id === studentId ? { ...student, grades: [...student.grades, grade] } : student
+  );
+
+const getStudentById = (students: Students, studentId: number): Student | null =>
+  students.find(student => student.id === studentId) || null;
+
+const calculateAverageGrade = (student: Student): number =>
+  student.grades.length === 0
+      ? 0
+      : student.grades.reduce((acc, grade) => acc + grade.score, 0) / student.grades.length;
+
+//-----------------------------------------------------------------------
+
+let students: Students = [];
+
+students = addStudent(students, { id: 1, name: 'Alice', grades: [] });
+students = addStudent(students, { id: 2, name: 'Bob', grades: [] });
+
+students = addGrade(students, 1, { subject: 'Math', score: 90 });
+students = addGrade(students, 1, { subject: 'Science', score: 85 });
+students = addGrade(students, 2, { subject: 'Math', score: 95 });
+
+//-----------------------------------------------------------------------
+
+const alice = getStudentById(students, 1);
+if (alice) {
+  const averageGrade = calculateAverageGrade(alice);
+  console.log(`Alice's average grade is: ${averageGrade}`);
+} else {
+  console.log("Student not found.");
+}
+
+//-----------------------------------------------------------------------
+
+// Problem: Task Management System
+//-----------------------------------------------------------------------
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  completed: boolean;
+  dueDate?: Date;
+}
+
+type TaskUpdate = Partial<Task>;
+
+type ReadOnlyTask = Readonly<Task>;
+
+type TaskSummary = Pick<Task, 'id' | 'title' | 'completed'>;
+
+//-----------------------------------------------------------------------
+
+const createTask = (id: number, title: string, description: string, dueDate?: Date): Task => ({
+  id,
+  title,
+  description,
+  completed: false,
+  dueDate,
+});
+
+const updateTask = (task: Task, updates: TaskUpdate): Task => ({
+  ...task,
+  ...updates,
+});
+
+const markAsComplete = (task: Task): ReadOnlyTask => ({
+  ...task,
+  completed: true,
+});
+
+const getTaskSummary = (task: Task): TaskSummary => ({
+  id: task.id,
+  title: task.title,
+  completed: task.completed,
+});
+
+//-----------------------------------------------------------------------
+
+const newTask = createTask(1, 'Complete homework', 'Finish math exercises', new Date('2024-06-30'));
+
+console.log(newTask);
+
+const updated = updateTask(newTask, { description: 'Finish all exercises' });
+
+console.log(updated);
+
+const completed = markAsComplete(updated);
+
+console.log(completed);
+
+const summary = getTaskSummary(completed);
+
+console.log(summary);
