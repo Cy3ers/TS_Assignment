@@ -42,8 +42,12 @@ const library = new Library();
 
 const book1 = new Book("1984", "George Orwell", "1234567890");
 const book2 = new Book("To Kill a Mockingbird", "Harper Lee", "0987654321");
+const book3 = new Book("Pride and Prejudice", "Jane Austen", "1234543210");
+const book4 = new Book("Harry Potter", "1991", "666666666");
 library.addBook(book1);
 library.addBook(book2);
+library.addBook(book3);
+library.addBook(book4);
 
 console.log(`All Books in Library:`);
 library.listBooks()
