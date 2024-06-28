@@ -77,14 +77,41 @@ const numberStack = new Stack();
 numberStack.push(10);
 numberStack.push(20);
 numberStack.push(30);
+const stringStack = new Stack();
+stringStack.push("Ten");
+stringStack.push("Twenty");
+stringStack.push("Thirty");
 console.log("Top item:", numberStack.peek());
+console.log("Top item:", stringStack.peek());
 console.log("Stack size:", numberStack.size());
+console.log("Stack size:", stringStack.size());
 console.log("Popped item:", numberStack.pop());
+console.log("Popped item:", stringStack.pop());
 console.log("Stack size after pop:", numberStack.size());
+console.log("Stack size after pop:", stringStack.size());
 console.log("Is stack empty?", numberStack.isEmpty());
+console.log("Is stack empty?", stringStack.isEmpty());
 //-----------------------------------------------------------------------
 const addStudent = (students, student) => [...students, student];
-const addGrade = (students, studentId, grade) => students.map(student => student.id === studentId ? Object.assign(Object.assign({}, student), { grades: [...student.grades, grade] }) : student);
+/*
+const addGrade = (students: Students, studentId: number, grade: Grade): Students =>
+  students.map(student =>
+      student.id === studentId ? { ...student, grades: [...student.grades, grade] } : student
+  );  // TODO: If student not found, then throw error (try catch)
+*/
+const addGrade = (students, studentId, grade) => {
+    try {
+        const updatedStudents = students.map(student => student.id === studentId ? Object.assign(Object.assign({}, student), { grades: [...student.grades, grade] }) : student);
+        const foundStudent = updatedStudents.find(student => student.id === studentId);
+        if (!foundStudent) {
+            throw new Error(`Student with ID ${studentId} not found`);
+        }
+        return updatedStudents;
+    }
+    catch (error) {
+        throw error;
+    }
+};
 const getStudentById = (students, studentId) => students.find(student => student.id === studentId) || null;
 const calculateAverageGrade = (student) => student.grades.length === 0
     ? 0
@@ -122,10 +149,18 @@ const getTaskSummary = (task) => ({
 });
 //-----------------------------------------------------------------------
 const newTask = createTask(1, 'Complete homework', 'Finish math exercises', new Date('2024-06-30'));
+const newTask1 = createTask(2, 'asdasd', 'Fasdwdqes', new Date('2024-06-30'));
 console.log(newTask);
+console.log(newTask1);
 const updated = updateTask(newTask, { description: 'Finish all exercises' });
+const updated1 = updateTask(newTask1, { description: 'Finish all exercises' });
 console.log(updated);
+console.log(updated1);
 const completed = markAsComplete(updated);
+const completed1 = markAsComplete(updated1);
 console.log(completed);
+console.log(completed1);
 const summary = getTaskSummary(completed);
+const summary1 = getTaskSummary(completed1);
 console.log(summary);
+console.log(summary1);
